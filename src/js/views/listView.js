@@ -2,7 +2,7 @@ import { elements } from "./baseView";
 
 export const renderItem = item => {
   const html = `
-    <li class="shopping__item" data-itemId=${item.id}>
+    <li class="shopping__item" data-itemid=${item.id}>
       <div class="shopping__count">
           <input type="number" value="${item.count}" step="${item.count}">
           <p>${item.unit}</p>
@@ -19,6 +19,6 @@ export const renderItem = item => {
 };
 
 export const deleteItem = id => {
-  const item = document.querySelector(`[date-itemId="${id}"]`);
-  item.parentElement.removeChild(item);
+  const item = document.querySelector(`[data-itemId="${id}"]`);
+  if (item) item.parentElement.removeChild(item);
 };
