@@ -49,7 +49,7 @@ export const clearResList = () => {
 };
 
 // limit title 
-const limitRecipeTitle = (title, limit = 19) => {
+export const limitRecipeTitle = (title, limit = 19) => {
   const newTitle = [];
 
   // check if title is longer than limit
