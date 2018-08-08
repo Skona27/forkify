@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:400,600,700" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <link rel="shortcut icon" href="img/favicon.png" type="image/x-icon">
+    <link rel="manifest" href="manifest.json">
     <title>forkify // Search over 1,000,000 recipes</title>
 </head>
 
@@ -438,5 +439,21 @@
 
     <!-- <script  src="js/bundle.js"></script> -->
 <script type="text/javascript" src="js/bundle.js"></script></body>
+
+<!-- service worker -->
+<script>
+    const PATH = 'js/service-worker.js';
+    
+    let isServiceWorkersSupport = ('serviceWorker' in navigator);
+    
+    if (isServiceWorkersSupport) {
+        console.log('Will service worker register?');
+        navigator.serviceWorker.register(PATH).then(function () {
+            console.log("Yes it did.");
+        }).catch(function (err) {
+            console.log("No it didn't. This happened: ", err)
+        });
+    }
+    </script>
 
 </html>
