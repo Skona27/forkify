@@ -2,10 +2,12 @@
 import Search from "./models/Search";
 import Recipe from "./models/Recipe";
 import List from "./models/List";
+import Likes from "./models/Likes";
 import { elements, renderLoader, clearLoader, elementStrings } from "./views/baseView";
 import * as searchView from "./views/searchView";
 import * as recipeView from "./views/recipeView";
 import * as listView from "./views/listView";
+import * as likesView from "./views/likesView";
 
 
 // State
@@ -90,7 +92,7 @@ const controlRecipe = async () => {
 
       // render the view
       clearLoader();
-      recipeView.renderRecipe(state.recipe);
+      recipeView.renderRecipe(state.recipe, state.likes.isLiked(id));
 
     } catch(err) {
       console.log(err);
@@ -103,6 +105,7 @@ const controlRecipe = async () => {
 window.addEventListener('hashchange', controlRecipe);
 window.addEventListener("load", controlRecipe);
 
+// listend fod update servings 
 elements.recipe.addEventListener("click", event => {
   if(event.target.matches(".btn-decrease, .btn-decrease *")) {
     if(state.recipe.servings > 1) {
@@ -114,6 +117,8 @@ elements.recipe.addEventListener("click", event => {
     recipeView.updateServingsIngredients(state.recipe);
   } else if (event.target.matches('.recipe__btn, .recipe__btn *')) {
     controlList();
+  } else if(event.target.matches(".recipe__love, .recipe__loce *")) {
+    controlLike;
   }
 });
 
@@ -144,3 +149,45 @@ elements.shopping.addEventListener("click", e => {
     state.list.updateCount(id, val);
   }
 });
+
+
+// like controller
+const controlLike = () => {
+  if (!state.likes) state.likes = new Likes();
+  const currentId = state.recipe.id;
+
+  if (!state.likes.isLiked) {
+    // is not already liked
+    // add new like to state
+    const {title, author, img} = state.recipe;
+    const newLike = state.likes.addLike(currentId, title, author, img); 
+    console.log(state.likes);
+    // toggle like btn
+    likesView.toggleLikeBtn(true);
+    // add to ui
+    likesView.renderLike(newLike);
+  } else {
+    // is already liked
+    // remove from state
+    state.likes.deleteLike(currentId);
+    console.log(state.likes);
+    // toggle btn
+    likesView.toggleLikeBtn(false);
+    // remove like
+    likesView.deleteLike(currentId);
+  }
+  // toggle btn
+  likesView.toggleLikeMenu(state.likes.getNumLikes());
+}
+
+// resotre likes on page load 
+window.addEventListener("load", () => {
+  // creat enew likes arr
+  state.likes = new Likes();
+  // restore likes
+  state.likes.readStorage();
+  // toggle btn
+  likesView.toggleLikeMenu(state.likes.getNumLikes());
+  // render existing likes
+  state.likes.likes.forEach(like => likesView.renderLike(like));
+})
