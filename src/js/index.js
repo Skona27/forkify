@@ -117,8 +117,8 @@ elements.recipe.addEventListener("click", event => {
     recipeView.updateServingsIngredients(state.recipe);
   } else if (event.target.matches('.recipe__btn, .recipe__btn *')) {
     controlList();
-  } else if(event.target.matches(".recipe__love, .recipe__loce *")) {
-    controlLike;
+  } else if(event.target.matches(".recipe__love, .recipe__love *")) {
+    controlLike();
   }
 });
 
@@ -154,9 +154,11 @@ elements.shopping.addEventListener("click", e => {
 // like controller
 const controlLike = () => {
   if (!state.likes) state.likes = new Likes();
-  const currentId = state.recipe.id;
+  const currentId = state.recipe.id; 
 
-  if (!state.likes.isLiked) {
+  console.log(currentId);
+
+  if (!state.likes.isLiked(currentId)) {
     // is not already liked
     // add new like to state
     const {title, author, img} = state.recipe;

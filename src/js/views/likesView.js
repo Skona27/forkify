@@ -1,4 +1,4 @@
-import { elements } from "./base";
+import { elements } from "./baseView";
 import { limitRecipeTitle } from './searchView';
 
 export const toggleLikeBtn = isLiked => {
@@ -10,7 +10,7 @@ export const toggleLikeMenu = numLikes => {
   elements.likesMenu.style.visibility = numLikes > 0 ? "visible" : "hidden";
 };
 
-export const renderLike = title => {
+export const renderLike = like => {
   const markup = `
     <li>
       <a class="likes__link" href="#${like.id}">
@@ -29,6 +29,6 @@ export const renderLike = title => {
 };
 
 export const deleteLike = id => {
-  const el = document.querySelector(`.likes__link[href*="${id}"]`).parentElement;
+  const el = document.querySelector(`.likes__link[href*="${id}"]`);
   if (el) el.parentElement.removeChild(el);
 };
